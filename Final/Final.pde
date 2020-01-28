@@ -47,7 +47,7 @@ void setup()
 for (int i=0;i<n;i++){
  velocidad[i]=random(0.5,5);
  zerx[i]=ancho;
- zery[i]=(int)random(0,alto-zero.height);
+ zery[i]=(int)random(200,520);
 }
 
 for (int j=0;j<ammo;j++){
@@ -89,7 +89,7 @@ void draw(){
       
     if(zerx[i]+zero.width<=0){
        zerx[i]=ancho+zero.width;
-       zery[i]=(int)random(0,alto-zero.height);
+       zery[i]=(int)random(200,520);
        image(zero,zerx[i],zery[i]);
        velocidad[i]=random(0.5,5);
        
@@ -121,16 +121,11 @@ void draw(){
       for(int i=0;i<n;i++){
         for(int j=0;j<ammo;j++){
       if(bxi[j]>=zerx[i] & byi[j]>=zery[i] || byi[j]>=zery[i]+zero.height){
-         bxi[j]=p40x+175;
-       byi[j]=p40y+p40.height/2;
-      noStroke();
-      noFill();
-      ellipse(bxi[j],byi[j],5,5);
         shoot=false;
         hit=true;
         
         zerx[i]=ancho+zero.width;
-       zery[i]=(int)random(0,alto-zero.height);
+       zery[i]=(int)random(200,520);
        image(zero,zerx[i],zery[i]);
        velocidad[i]=random(0.5,5);
        
@@ -141,8 +136,19 @@ void draw(){
       }
       
         if(hit==true){
+          for(int i=0;i<n;i++){
+            
+        for(int j=0;j<ammo;j++){
+             bxi[j]=p40x+175;
+             byi[j]=p40y+p40.height/2;
+             noStroke();
+             noFill();
+             ellipse(bxi[j],byi[j],5,5);
+          
+          
           contaT++;
         }
+          }
         
         
     
@@ -151,3 +157,4 @@ void draw(){
    
       
     }
+}
