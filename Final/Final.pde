@@ -51,22 +51,17 @@ boolean menu;
 boolean defeat;
 boolean thegame;
 
-//boton para continuar tras derrrota
-//int xbcont;
-//int ybcont;
-//boton para regresar al menu de ini io tras derrota
-//int xbquit;
-//int ybquit;
-//boton de menu de inicio para empezar el juego 
-//int xbstart;
-//int ybstart;
+int ventana=0;
 
-//int anchobuttons;
-//int altobuttons;
 
 
 void setup()
 {
+   menu=true;
+ thegame=false;
+ defeat=false;
+ 
+ 
  surface.setSize(ancho,alto);
  background(255,255,255);
 
@@ -79,41 +74,57 @@ void setup()
  p40y=alto/2-p40.height/2;
 
 //enemigos
-for (int i=0;i<n;i++){
+  for (int i=0;i<n;i++){
  velocidad[i]=random(0.5,5);
  zerx[i]=ancho;
  zery[i]=(int)random(200,520);
-}
+  }
 
 //balas
-for (int j=0;j<ammo;j++){
+  for (int j=0;j<ammo;j++){
  byi[j]=p40y+p40.height/2;
  bxi[j]=p40x+175;
-}
+  }
 
  ellipseMode(RADIUS);
  rectMode(RADIUS);
- 
- menu=true;
- thegame=true;
- defeat=false;
+
  
  radio=5; 
  contaHP=0;
- 
- //anchobuttons=50;
- //altobuttons=20;
- 
- 
 
 }
 
 void draw(){
+  
+  
+  
+  if(menu==true);{
+    thegame=false;
+    defeat=false;
+   background(135,206,235);
+   textFont(fuente2);
+    fill(255,215,0);
+    text("DOGFIGHT",460,300);
+    textFont(fuente);
+    fill(0,0,0);
+    text("PRESS SPACE BAR TO PLAY",524,350);
+    
+    
+    //if(keyPressed && key=='c'){
+    //  menu=false;
+    //  thegame=true;
+    //}
+    
+    
+  }
+  
+  
   if(thegame==true);{
   background(255,255,255);
   textFont(fuente);
       
-      //interfaz pantalla de juego
+//interfaz pantalla de juego
       fill(73,72,42);
       text("Flying Tigers",50,50);
       text(contaT,250,50);
@@ -121,7 +132,7 @@ void draw(){
       text("HP",800,50);
       text(contaHP,875,50);
       
-      //p40-jugador
+//p40-jugador
       image(p40,p40x,p40y);
      if(keyPressed==true && key==CODED && keyCode==UP){
         p40y=p40y-3;
@@ -131,12 +142,12 @@ void draw(){
         p40y=p40y+3;
       }
       
-      //zero
+//zero-enemigo
       for (int i=0;i<n;i++){
       image(zero,zerx[i],zery[i]);
       zerx[i]=zerx[i]-velocidad[i];
       
-      //detectar enemigo que escapa 
+//detectar enemigo que escapa 
     if(zerx[i]+zero.width<=0){
        zerx[i]=ancho+zero.width;
        zery[i]=(int)random(200,520);
@@ -144,30 +155,30 @@ void draw(){
        velocidad[i]=random(0.5,5);
        
       contaHP--;
-    }
-      }
+        }  
+     }
       
-     //disparo
+//disparo
       for (int j=0;j<ammo;j++){
       if(keyPressed && key == ' '){
         shoot=true;
-      }      
-      if(shoot==true){
-         noStroke();
-         fill(255,127,80);
-         ellipse(bxi[j],byi[j],radio,radio);
-         bxi[j]=bxi[j]+15;
-      }  
+       }      
+          if(shoot==true){
+             noStroke();
+             fill(255,127,80);
+             ellipse(bxi[j],byi[j],radio,radio);
+             bxi[j]=bxi[j]+15;
+          }  
       
-      //limites de la bala
-      if(bxi[j]+radio>=ancho/2){
-        bxi[j]=p40x+175;
-       byi[j]=p40y+p40.height/2;
-      noStroke();
-      noFill();
-      ellipse(bxi[j],byi[j],5,5);
-        shoot=false;
-      }
+//limites de la bala
+          if(bxi[j]+radio>=ancho/2){
+              bxi[j]=p40x+175;
+              byi[j]=p40y+p40.height/2;
+              noStroke();
+              noFill();
+              ellipse(bxi[j],byi[j],5,5);
+              shoot=false;
+          }
       }
       
       //bala acierta 
@@ -202,15 +213,13 @@ void draw(){
           contaT++;
         }
           }
-        
-        
-    
-      
-
-   
-      
+          
     }
   }
+  
+ 
+  
+  
   //derrota
   if(contaHP==0){
     thegame=false;
@@ -218,11 +227,6 @@ void draw(){
   }
   //pantalla de derrota 
   if(defeat==true){
-    //xbcont=500;
-    //ybcont=425;
-    //xbquit=700;
-    //ybquit=425;
-    
     background(0,0,0);
     textFont(fuente2);
     fill(255,0,0);
@@ -237,9 +241,16 @@ void draw(){
     
       if(keyPressed==true && key=='c'){
         defeat=false;
+        menu=false;
         thegame=true;
         contaHP=10;
         contaT=0;
+      }
+      
+      if(keyPressed==true && key=='x'){
+        defeat=false;
+        thegame=false;
+        menu=true;
       }
     
     
