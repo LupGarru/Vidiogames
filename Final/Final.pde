@@ -1,3 +1,4 @@
+
 //numero de enemigos simultaneos
 int n=5;
 //numero de disparos consecutivos
@@ -47,62 +48,12 @@ int contaHP;
 int radio;
 
 //pantallas
-boolean menu;
-boolean defeat;
-boolean thegame;
-
-int ventana=0;
 
 
+int ventana;
 
-void setup()
-{
-   menu=true;
- thegame=false;
- defeat=false;
- 
- 
- surface.setSize(ancho,alto);
- background(255,255,255);
-
-
- p40=loadImage("P402.png");
- zero=loadImage("ZERO2.png");
- fuente=loadFont("PowerClear-Regular-36.vlw");
- fuente2=loadFont("gameover.vlw");
- p40x=0;
- p40y=alto/2-p40.height/2;
-
-//enemigos
-  for (int i=0;i<n;i++){
- velocidad[i]=random(0.5,5);
- zerx[i]=ancho;
- zery[i]=(int)random(200,520);
-  }
-
-//balas
-  for (int j=0;j<ammo;j++){
- byi[j]=p40y+p40.height/2;
- bxi[j]=p40x+175;
-  }
-
- ellipseMode(RADIUS);
- rectMode(RADIUS);
-
- 
- radio=5; 
- contaHP=0;
-
-}
-
-void draw(){
-  
-  
-  
-  if(menu==true);{
-    thegame=false;
-    defeat=false;
-   background(135,206,235);
+void menu(){
+background(135,206,235);
    textFont(fuente2);
     fill(255,215,0);
     text("DOGFIGHT",460,300);
@@ -111,18 +62,16 @@ void draw(){
     text("PRESS SPACE BAR TO PLAY",524,350);
     
     
-    //if(keyPressed && key=='c'){
-    //  menu=false;
-    //  thegame=true;
-    //}
-    
-    
-  }
+    if(keyPressed && key==' '){
+      ventana=1; 
+    }
+}
+void thegame(){
   
-  
-  if(thegame==true);{
   background(255,255,255);
   textFont(fuente);
+  
+  
       
 //interfaz pantalla de juego
       fill(73,72,42);
@@ -215,19 +164,21 @@ void draw(){
           }
           
     }
-  }
   
  
   
   
   //derrota
   if(contaHP==0){
-    thegame=false;
-    defeat=true;
+    ventana=2;
   }
-  //pantalla de derrota 
-  if(defeat==true){
-    background(0,0,0);
+
+
+
+
+}
+void defeat(){
+background(0,0,0);
     textFont(fuente2);
     fill(255,0,0);
     text("GAME OVER",460,300);
@@ -240,19 +191,66 @@ void draw(){
     text("X=NO",695,400);
     
       if(keyPressed==true && key=='c'){
-        defeat=false;
-        menu=false;
-        thegame=true;
-        contaHP=10;
-        contaT=0;
+       ventana=1;
+       contaHP=contaHP-1;
       }
       
       if(keyPressed==true && key=='x'){
-        defeat=false;
-        thegame=false;
-        menu=true;
+        ventana=0;
       }
-    
-    
+}
+
+
+void setup()
+{
+ surface.setSize(ancho,alto);
+ background(255,255,255);
+
+
+ p40=loadImage("P402.png");
+ zero=loadImage("ZERO2.png");
+ fuente=loadFont("PowerClear-Regular-36.vlw");
+ fuente2=loadFont("gameover.vlw");
+ p40x=0;
+ p40y=alto/2-p40.height/2;
+
+//enemigos
+  for (int i=0;i<n;i++){
+ velocidad[i]=random(0.5,5);
+ zerx[i]=ancho;
+ zery[i]=(int)random(200,520);
   }
+
+//balas
+  for (int j=0;j<ammo;j++){
+ byi[j]=p40y+p40.height/2;
+ bxi[j]=p40x+175;
+  }
+
+ ellipseMode(RADIUS);
+ rectMode(RADIUS);
+
+ 
+ radio=5; 
+ ventana=0;
+ contaHP=10;
+
+}
+
+void draw(){
+  
+  switch(ventana){
+    case 0:
+      menu();
+      break;
+    case 1:
+      thegame();
+      break;
+    case 2:
+      defeat();
+      break;
+  }
+  
+  
+
 }
