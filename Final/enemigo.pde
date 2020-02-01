@@ -3,6 +3,8 @@ class Enemigo {
   float yei;
   float velEn;
   PImage zero;
+  int xeiInt;
+  int yeiInt;
   
   
   Enemigo(){
@@ -26,6 +28,10 @@ class Enemigo {
    velEn=0;
   }
   void display(){
+    
     image(zero,xei,yei);
+  
   }
+  
+  
 }

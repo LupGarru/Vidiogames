@@ -30,7 +30,7 @@ class Bala {
    if(disparo==true){
      xb=xb+velb;
    }
-   if(xb+radio>=ancho/2){
+   if(xb+radio>=ancho){
      reset();
    }
  }

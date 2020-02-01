@@ -1,35 +1,42 @@
-
-
 //dimensiones para la pantalla
-int ancho=1200;
-int alto=500;
 
-PImage p40;
+static int ancho=1200;
+static int alto=500;
+
+static PImage p40;
 //imagenes del jugador, el enemigo, y fuentes para los textos
-PImage zero;
+static PImage zero;
 //pantalla inicial
-PImage titulo;
+static PImage titulo;
 //fondo
-PImage fondo;
+static PImage fondo;
 //textos pequeños
-PFont fuente;
+static PFont fuente;
 //textos grandes
-PFont fuente2;
+static PFont fuente2;
 
 //contadores de vida y de enemigos derribados
-int contaT;
-int contaHP;
+static int contaT;
+static int contaHP;
 //otro
-int Pos;
-int ventana;
+static int Pos;
+static int ventana;
+
+static float bullety;
+static float bulletx;
+static float enemyy;
+static float enemyx;
+static float alturaEnemy;
 
 
-Bala b; 
-Jugador P1; 
-Enemigo En; 
+static Bala b; 
+static Jugador P1; 
+static Enemigo En; 
+
 
 void setup()
 {
+ frameRate(30); // image draw latency still happening 
  surface.setSize(ancho,alto);
  background(255,255,255);
  fuente=loadFont("PowerClear-Regular-36.vlw");
@@ -45,8 +52,7 @@ void setup()
  b = new Bala();
  P1 = new Jugador();
  En= new Enemigo();
- 
-
+ println("Iniciando..");
 }
 
 void draw(){
@@ -60,7 +66,6 @@ void draw(){
     case 2:
       defeat();
       break;
-     
   }
 }
 
@@ -73,10 +78,21 @@ void menu(){
       ventana=1; 
     }
 }
+
+
+
 void thegame(){
   
+  // clear para solucionar el lag de los enemigos
+  
+  clear();
+  if (Pos <= (-1200)){
+    Pos = 0;
+  }
   image(fondo,Pos%fondo.width,0);
   Pos--;
+
+  
   textFont(fuente);
   
 //interfaz pantalla de juego
@@ -117,11 +133,27 @@ En.Movimiento();
   
   //derrota
   if(contaHP==0){
-    ventana=2;
+     ventana=2;
+     println("Game Over");
   }
   
   //acierto
-  if(b.yb>=En.yei && b.xb<=En.yei+zero.height && b.xb>=En.xei){
+  
+  bullety = b.yb;
+  bulletx = b.xb;
+  enemyy =  En.yei;
+  enemyx = En.xei;
+  alturaEnemy = enemyy + zero.height;
+  
+  if( (bullety >= enemyy) && (bullety <= alturaEnemy ) && (bulletx >= enemyx) ){
+    println("---------------------------------------------------------");
+    println("Enemigo interceptado por la bala!");
+    println("Parte baja del enemigo <= altura bala <= parte alta del enemigo");
+    println( enemyy +" <= "+ bullety +" <= "+ alturaEnemy);
+    println("enemy x <= bullet x");
+    println( enemyx +" <= " + bulletx );
+        
+    
     enemigoDerribado();
   }
 
@@ -152,6 +184,22 @@ void defeat(){
       
       if(keyPressed==true && key=='x'){
         ventana=0;
+        
+        // reiniciar las variables del juego
+       surface.setSize(ancho,alto);
+       background(255,255,255);
+       fuente=loadFont("PowerClear-Regular-36.vlw");
+       fuente2=loadFont("gameover.vlw");
+       p40=loadImage("P402.png");
+       zero=loadImage("ZERO2.png");
+       titulo=loadImage("titulo.png");
+       fondo=loadImage("Fondo.png");
+       contaHP=10;
+       Pos=0;
+       b = new Bala();
+       P1 = new Jugador();
+       En.reset();
+       
         
       }
 }
